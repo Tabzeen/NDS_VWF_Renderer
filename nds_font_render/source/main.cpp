@@ -38,7 +38,7 @@ int main(void) {
 	// Define the palette colors for testing
 	*(BG_PALETTE + 1) = 0x0000;
 	*(BG_PALETTE + 2) = 0xFFFF;
-	*(BG_PALETTE + 3) = 0x04 | 0x04 << 5 | 0x04  << 10;
+	*(BG_PALETTE + 3) = 0x06 | 0x10 << 5 | 0x08 << 10;
 	*(BG_PALETTE + 4) = 0x04 | 0x00 << 5 | 0x06  << 10;
 
 
@@ -62,7 +62,8 @@ int main(void) {
 		// Wait for blanking interval
 		swiWaitForVBlank();
 		if(!once){
-			dialogue_engine.push_ascii_string("Hello.World!.This.is.a.text.written.in.my.engine");
+			//dialogue_engine.push_ascii_string("Hello.World!.This.is.a.text.written.in.my.engine");
+			dialogue_engine.render_screenshot_demo();
 			once = true;
 		}
 

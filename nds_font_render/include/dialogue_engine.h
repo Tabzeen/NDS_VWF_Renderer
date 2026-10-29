@@ -21,7 +21,8 @@ public:
     void clear_tileset();
     void clear_tilemap();
     u32 get_word_width_in_pixels(char* word);
-    u32 get_rem_pixels(char* word);
+    u32 get_rem_pixels();
+    void render_screenshot_demo();
 
 private:
     struct TextMeta {

@@ -233,16 +233,19 @@ void DialogueEngine::push_char(int idx, bool advance){
 void DialogueEngine::push_ascii_string(char* text){
     int i = 0;
     while(text[i] != '\0'){
-        if(i == ' '){
-            
+        if(text[i] == ' '){
+            u8 space_stride = 6; 
+            u8 target_stride_x = space_stride + 8 * text_meta.cursor_tile_x + text_meta.cursor_stride_x;   
+            u8 target_y = 8 * text_meta.cursor_tile_y + text_meta.cursor_stride_y;
+            set_cursor_position(target_stride_x, target_y);
         }
         else {
             auto char_idx = char_data->map_fn(static_cast<u8>(text[i]));
             sassert(char_idx, "Invalid Character Index accessed!");
             push_char(*char_idx, true);    
-        };
+        }
         i++;
-    };
+    }
 }
 
 
@@ -292,18 +295,23 @@ bool DialogueEngine::get_row_full(){
     return (text_meta.x_width - text_meta.cursor_tile_x) > 2;  
 }
 
-u32 DialogueEngine::get_word_width_in_pixels(char* word){
+u32 DialogueEngine::get_word_width_in_pixels(char* word) {
     int word_idx = 0;
     int total_width = 0;
-    while(word_idx != '\0'){
+    
+    while (word[word_idx] != '\0') {
+        auto decoded_opt = char_data->map_fn(word[word_idx]);
+        if (decoded_opt.has_value()) {
+            int decoded_idx = decoded_opt.value();
+            total_width += char_data->strides[decoded_idx] + text_meta.kerning;
+        }
         word_idx++;
-        int decoded_idx = char_data->map_fn(word[word_idx]);
-        total_width = char_data->strides[decoded_idx] + text_meta.kerning;
     }
     return total_width; 
 }
 
 u32 DialogueEngine::get_rem_pixels(){
     int rem_pixels = 0;
-    rem_pixels = (text_meta.cursor_tile_x - text_meta.x_end; 
+    rem_pixels = (text_meta.cursor_tile_x - text_meta.x_end); 
 }
+
